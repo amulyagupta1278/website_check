@@ -11,6 +11,7 @@ import { ChevronRight, Hammer, Printer, Monitor, Lamp, Users, Truck, Quote, Link
 import { BRAND, HERO, WHY, GALLERY, TESTIMONIALS, CONTACT } from "../mock/mock";
 import { Carousel, CarouselContent, CarouselItem } from "../components/ui/carousel";
 import { toast } from "sonner";
+import axios from "axios";
 
 const NavLink = ({ href, children }) => (
   <a href={href} className="text-sm font-medium text-white/90 hover:text-white transition-colors px-3 py-2">
