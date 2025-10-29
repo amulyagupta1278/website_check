@@ -116,6 +116,9 @@ backend:
       - working: true
         agent: "main"
         comment: "GET /api returns Hello World"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: GET /api/ returns 200 with {message: 'Hello World'} as expected"
 
   - task: "Create Lead API"
     implemented: true
