@@ -180,3 +180,5 @@ test_plan:
 agent_communication:
   - agent: "main"
     message: "Please run backend tests for leads endpoints. Ignore external forwarding (Sheets/Email) since env vars are not set; validate stored flag and response contract."
+  - agent: "testing"
+    message: "✅ BACKEND TESTING COMPLETE: All 3 endpoints tested successfully. GET /api/ returns Hello World (200), POST /api/leads creates and stores leads correctly with proper response format (ok=true, stored=true, sheets_forwarded=false, email_sent=false), GET /api/leads retrieves stored leads with limit parameter. External integrations correctly disabled due to missing env vars. Backend API is fully functional."
