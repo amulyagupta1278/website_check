@@ -126,11 +126,14 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "POST /api/leads stores lead in Mongo and conditionally forwards to Google Apps Script via SHEETS_WEBAPP_URL and SendGrid via SENDGRID_API_KEY."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: POST /api/leads with test payload returns 200 with ok=true, stored=true, id present, sheets_forwarded=false, email_sent=false (as expected since env vars not set). Lead successfully stored in database."
 
   - task: "List Leads API"
     implemented: true
