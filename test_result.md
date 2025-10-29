@@ -141,11 +141,14 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "GET /api/leads returns stored leads sorted by created_at desc."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: GET /api/leads?limit=10 returns 200 with array containing the test lead (email: lead@example.com). Sorting and limit parameter working correctly."
 
 frontend:
   - task: "Landing page redesign with hero video + functional form"
