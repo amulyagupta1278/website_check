@@ -83,24 +83,39 @@ const HeroTop = () => {
   const [submitted, setSubmitted] = useState(false);
   const [service, setService] = useState("Booth Design");
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.currentTarget));
     if (!data.name || !data.email) {
       toast.error("Please enter name and email");
       return;
     }
-    const payload = { ...data, service, ts: Date.now() };
+    const payload = { ...data, service };
     setSaving(true);
-    const entries = JSON.parse(localStorage.getItem("proevent_leads") || "[]");
-    entries.push(payload);
-    localStorage.setItem("proevent_leads", JSON.stringify(entries));
-    setTimeout(() => {
+
+    // Save to backend
+    try {
+      const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+      const res = await axios.post(`${API}/leads`, payload);
+      if (res.data?.ok) {
+        setSubmitted(true);
+        toast.success("Thanks! We’ll get back within 24 hours.");
+      } else {
+        toast.message("Saved locally. Backend not fully configured yet.");
+        const entries = JSON.parse(localStorage.getItem("proevent_leads") || "[]");
+        entries.push({ ...payload, ts: Date.now() });
+        localStorage.setItem("proevent_leads", JSON.stringify(entries));
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Could not reach server. Saved locally.");
+      const entries = JSON.parse(localStorage.getItem("proevent_leads") || "[]");
+      entries.push({ ...payload, ts: Date.now() });
+      localStorage.setItem("proevent_leads", JSON.stringify(entries));
+    } finally {
       setSaving(false);
-      setSubmitted(true);
-      toast.success("Thanks! We’ll get back within 24 hours.");
       formRef.current?.reset();
-    }, 600);
+    }
   };
 
   return (
