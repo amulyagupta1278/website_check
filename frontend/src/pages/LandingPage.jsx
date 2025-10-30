@@ -7,8 +7,8 @@ import { Textarea } from "../components/ui/textarea";
 import { Label } from "../components/ui/label";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
-import { ChevronRight, Hammer, Printer, Monitor, Lamp, Users, Truck, Quote, Linkedin, Facebook, Instagram } from "lucide-react";
-import { BRAND, HERO, WHY, GALLERY, TESTIMONIALS, CONTACT } from "../mock/mock";
+import { ChevronRight, Hammer, Printer, Monitor, Lamp, Users, Truck, Quote, Linkedin, Facebook, Instagram, CheckCircle2 } from "lucide-react";
+import { BRAND, HERO, WHY, GALLERY, TESTIMONIALS, CONTACT, CORE_SERVICES } from "../mock/mock";
 import { Carousel, CarouselContent, CarouselItem } from "../components/ui/carousel";
 import { toast } from "sonner";
 import axios from "axios";
@@ -37,6 +37,7 @@ const HeaderNav = () => {
         </div>
         <nav className="hidden md:flex items-center">
           <NavLink href="#top">Home</NavLink>
+          <NavLink href="#services">Services</NavLink>
           <NavLink href="#why">Why Us</NavLink>
           <NavLink href="#portfolio">Portfolio</NavLink>
           <NavLink href="#testimonials">Testimonials</NavLink>
@@ -190,6 +191,42 @@ const HeroTop = () => {
   );
 };
 
+const CoreServices = () => {
+  const iconMap = { Hammer, Printer, Monitor, Lamp, Users, Truck, CheckCircle2 };
+  return (
+    <section id="services" className="py-20 bg-white">
+      <div className="mx-auto max-w-7xl px-6">
+        <h2 className="text-3xl md:text-4xl font-bold text-[#121212]">Our Core Services</h2>
+        <p className="text-neutral-600 mt-2">Everything needed to deliver a premium booth—end to end.</p>
+        <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {CORE_SERVICES.map((svc, idx) => {
+            const Icon = iconMap[svc.icon] || CheckCircle2;
+            return (
+              <Card key={idx} className="group hover:shadow-xl transition-all">
+                <CardContent className="p-6">
+                  <div className="flex items-start gap-4">
+                    <div className="h-11 w-11 rounded-lg bg-[#121212] text-white flex items-center justify-center ring-1 ring-black/10 group-hover:ring-[var(--brand)] transition-colors">
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-lg text-[#121212]">{svc.title}</h3>
+                      <ul className="mt-2 space-y-1 text-neutral-600 list-disc pl-5">
+                        {svc.items.map((it, i) => (
+                          <li key={i}>{it}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const WhyChooseUs = () => (
   <section id="why" className="py-20 bg-white">
     <div className="mx-auto max-w-7xl px-6">
@@ -275,6 +312,7 @@ const Footer = () => (
       <div>
         <h5 className="font-semibold">Quick Links</h5>
         <ul className="mt-3 space-y-2 text-sm text-neutral-700">
+          <li><a className="hover:text-black" href="#services">Services</a></li>
           <li><a className="hover:text-black" href="#why">Why Us</a></li>
           <li><a className="hover:text-black" href="#portfolio">Portfolio</a></li>
           <li><a className="hover:text-black" href="#testimonials">Testimonials</a></li>
@@ -306,6 +344,7 @@ export default function LandingPage() {
     <main className="bg-[#121212] text-white">
       <HeaderNav />
       <HeroTop />
+      <CoreServices />
       <WhyChooseUs />
       <Portfolio />
       <Testimonials />

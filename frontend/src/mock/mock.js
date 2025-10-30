@@ -41,6 +41,72 @@ export const SERVICES = [
   { key: "others", icon: "Truck", title: "Others", text: "Generators, carpets, flower decor, logistics, and transport." },
 ];
 
+export const CORE_SERVICES = [
+  {
+    title: "Stall Fabrication & Setup",
+    icon: "Hammer",
+    items: [
+      "Octonorm & Wooden stall fabrication",
+      "Customized design and on-site installation",
+      "Flooring, partitions, and storage area setup",
+    ],
+  },
+  {
+    title: "Printing & Branding",
+    icon: "Printer",
+    items: [
+      "Flex, vinyl, sunboard, foam board printing",
+      "Standees, backdrops, directional signage",
+      "On-site branding installation and dismantling",
+    ],
+  },
+  {
+    title: "Display & LED Screens",
+    icon: "Monitor",
+    items: [
+      "LED TVs (32”, 43”, 55”, 65”) with stands",
+      "Large LED walls (P3/P4 panels)",
+      "Content playback support (USB/HDMI)",
+    ],
+  },
+  {
+    title: "Furniture & Lighting",
+    icon: "Lamp",
+    items: [
+      "Chair, sofa, table, counter, brochure stand",
+      "External and decorative lights, par lights, focus lights",
+      "Extension cords and electrical setup",
+    ],
+  },
+  {
+    title: "Manpower & Hospitality",
+    icon: "Users",
+    items: [
+      "Hostess / promoter staff",
+      "Tea, coffee, and water setup",
+      "Cleaning and daily maintenance staff",
+    ],
+  },
+  {
+    title: "Others",
+    icon: "Truck",
+    items: [
+      "Generator & power backup",
+      "Flower decoration & carpet setup",
+      "Logistics and transport arrangements",
+    ],
+  },
+  {
+    title: "Complete Event Management",
+    icon: "CheckCircle2",
+    items: [
+      "Single-window execution from planning to wrap-up",
+      "Budgeting, vendor coordination, and on-ground control",
+      "Post-event dismantling and handover",
+    ],
+  },
+];
+
 export const WHY = [
   { title: "Design Excellence", text: "Purpose-built booths that reflect your brand with modular or custom builds." },
   { title: "On-Time Delivery", text: "Tight, dependable timelines from fabrication to on-site assembly." },
