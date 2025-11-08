@@ -44,7 +44,7 @@ const HeaderNav = () => {
           <NavLink href="#contact">Contact</NavLink>
         </nav>
         <div className="hidden md:block">
-          <a href="#contact"><Button className="bg-[var(--brand)] hover:bg-[#e06f17] text-white rounded-md">Get a Quote</Button></a>
+          <a href="#top"><Button className="bg-[var(--brand)] hover:bg-[#e06f17] text-white rounded-md">Get a Quote</Button></a>
         </div>
       </div>
     </header>
@@ -325,11 +325,6 @@ const Footer = () => (
           <li>Website: {CONTACT.website}</li>
           <li>Phone: {CONTACT.phones.join(" | ")}</li>
         </ul>
-        <div className="flex items-center gap-3 mt-4 text-neutral-600">
-          <a href="#" aria-label="LinkedIn" className="hover:text-black"><Linkedin className="h-5 w-5" /></a>
-          <a href="#" aria-label="Facebook" className="hover:text-black"><Facebook className="h-5 w-5" /></a>
-          <a href="#" aria-label="Instagram" className="hover:text-black"><Instagram className="h-5 w-5" /></a>
-        </div>
       </div>
     </div>
     <div className="border-t border-neutral-200 py-4 text-center text-xs text-neutral-500">© {new Date().getFullYear()} {BRAND.name}. All rights reserved.</div>
