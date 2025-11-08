@@ -1,0 +1,13 @@
+[build]
+  base    = "frontend"
+  publish = "frontend/build"
+  command = "npm ci && npm run build"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# SPA redirect so refresh/deep links don’t 404
+[[redirects]]
+  from = "/*"
+  to   = "/index.html"
+  status = 200
