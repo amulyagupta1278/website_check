@@ -5,14 +5,13 @@ import { Dialog, DialogContent, DialogTrigger } from "../components/ui/dialog";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import { Label } from "../components/ui/label";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
-import { ChevronRight, Hammer, Printer, Monitor, Lamp, Users, Truck, Quote, Linkedin, Facebook, Instagram, CheckCircle2 } from "lucide-react";
+import { Hammer, Printer, Monitor, Lamp, Users, Truck, Quote, CheckCircle2 } from "lucide-react";
 import { BRAND, HERO, WHY, GALLERY, TESTIMONIALS, CONTACT, CORE_SERVICES } from "../mock/mock";
 import { Carousel, CarouselContent, CarouselItem } from "../components/ui/carousel";
 import { toast } from "sonner";
-import axios from "axios";
 
+// Simple link
 const NavLink = ({ href, children }) => (
   <a href={href} className="text-sm font-medium text-white/90 hover:text-white transition-colors px-3 py-2">
     {children}
@@ -27,12 +26,14 @@ const HeaderNav = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-[background,backdrop-filter,border-color] duration-300 ${
-      scrolled ? "backdrop-blur-xl bg-black/50 border-b border-white/10" : "bg-transparent"
-    }`}>
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-[background,backdrop-filter,border-color] duration-300 ${
+        scrolled ? "backdrop-blur-xl bg-black/50 border-b border-white/10" : "bg-transparent"
+      }`}
+    >
       <div className="mx-auto max-w-7xl px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="h-9 w-9 rounded-md bg-[var(--brand)] shadow-inner"></div>
+          <div className="h-9 w-9 rounded-md bg-[var(--brand)] shadow-inner" />
           <span className="text-white font-semibold tracking-wide">{BRAND.name}</span>
         </div>
         <nav className="hidden md:flex items-center">
@@ -44,7 +45,9 @@ const HeaderNav = () => {
           <NavLink href="#contact">Contact</NavLink>
         </nav>
         <div className="hidden md:block">
-          <a href="#top"><Button className="bg-[var(--brand)] hover:bg-[#e06f17] text-white rounded-md">Get a Quote</Button></a>
+          <a href="#top">
+            <Button className="bg-[var(--brand)] hover:bg-[#e06f17] text-white rounded-md">Get a Quote</Button>
+          </a>
         </div>
       </div>
     </header>
@@ -84,38 +87,35 @@ const HeroTop = () => {
   const [submitted, setSubmitted] = useState(false);
   const [service, setService] = useState("Booth Design");
 
+  // Netlify Forms submit (URL-encoded POST to "/")
   const onSubmit = async (e) => {
     e.preventDefault();
-    const data = Object.fromEntries(new FormData(e.currentTarget));
-    if (!data.name || !data.email) {
+    const formEl = e.currentTarget;
+
+    const data = new FormData(formEl);
+    // ensure current Select value is included
+    data.set("service", service);
+
+    if (!data.get("name") || !data.get("email")) {
       toast.error("Please enter name and email");
       return;
     }
-    const payload = { ...data, service };
-    setSaving(true);
 
-    // Save to backend
+    setSaving(true);
     try {
-      const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
-      const res = await axios.post(`${API}/leads`, payload);
-      if (res.data?.ok) {
-        setSubmitted(true);
-        toast.success("Thanks! We’ll get back within 24 hours.");
-      } else {
-        toast.message("Saved locally. Backend not fully configured yet.");
-        const entries = JSON.parse(localStorage.getItem("proevent_leads") || "[]");
-        entries.push({ ...payload, ts: Date.now() });
-        localStorage.setItem("proevent_leads", JSON.stringify(entries));
-      }
+      await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(data).toString(),
+      });
+      setSubmitted(true);
+      toast.success("Thanks! We’ll get back within 24 hours.");
+      formEl.reset();
     } catch (err) {
       console.error(err);
-      toast.error("Could not reach server. Saved locally.");
-      const entries = JSON.parse(localStorage.getItem("proevent_leads") || "[]");
-      entries.push({ ...payload, ts: Date.now() });
-      localStorage.setItem("proevent_leads", JSON.stringify(entries));
+      toast.error("Submit failed. Please try again.");
     } finally {
       setSaving(false);
-      formRef.current?.reset();
     }
   };
 
@@ -131,57 +131,109 @@ const HeroTop = () => {
         <div className="order-1 lg:order-2">
           <div className="rounded-2xl md:backdrop-blur-2xl bg-white/5 border border-white/10 p-6 md:p-8 shadow-[0_10px_40px_rgba(0,0,0,0.35)]">
             <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">Event Booths That Win Attention</h1>
-            <p className="mt-2 text-white/80">Design, fabrication, and on-ground support for expos and corporate events across India.</p>
+            <p className="mt-2 text-white/80">
+              Design, fabrication, and on-ground support for expos and corporate events across India.
+            </p>
 
             {!submitted ? (
-              <form ref={formRef} onSubmit={onSubmit} className="mt-6 grid grid-cols-1 gap-4">
+              <form
+                ref={formRef}
+                name="contact"
+                method="POST"
+                data-netlify="true"
+                data-netlify-honeypot="botField"
+                onSubmit={onSubmit}
+                className="mt-6 grid grid-cols-1 gap-4"
+              >
+                {/* Netlify detection fields */}
+                <input type="hidden" name="form-name" value="contact" />
+                <p className="hidden">
+                  <label>
+                    Don’t fill this out if you're human: <input name="botField" />
+                  </label>
+                </p>
+
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="name">Name<span className="text-red-500"> *</span></Label>
-                    <Input id="name" name="name" placeholder="Your full name" className="mt-1 bg-white/5 border-white/20 text-white placeholder:text-white/50" />
+                    <Label htmlFor="name">
+                      Name<span className="text-red-500"> *</span>
+                    </Label>
+                    <Input
+                      id="name"
+                      name="name"
+                      placeholder="Your full name"
+                      className="mt-1 bg-white/5 border-white/20 text-white placeholder:text-white/50"
+                      required
+                    />
                   </div>
                   <div>
-                    <Label htmlFor="email">Email<span className="text-red-500"> *</span></Label>
-                    <Input id="email" name="email" type="email" placeholder="name@example.com" className="mt-1 bg-white/5 border-white/20 text-white placeholder:text-white/50" />
+                    <Label htmlFor="email">
+                      Email<span className="text-red-500"> *</span>
+                    </Label>
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      placeholder="name@example.com"
+                      className="mt-1 bg-white/5 border-white/20 text-white placeholder:text-white/50"
+                      required
+                    />
                   </div>
                 </div>
+
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="company">Company</Label>
-                    <Input id="company" name="company" placeholder="Company name" className="mt-1 bg-white/5 border-white/20 text-white placeholder:text-white/50" />
+                    <Input
+                      id="company"
+                      name="company"
+                      placeholder="Company name"
+                      className="mt-1 bg-white/5 border-white/20 text-white placeholder:text-white/50"
+                    />
                   </div>
                   <div>
                     <Label>Service</Label>
                     <Select value={service} onValueChange={setService}>
-                      <SelectTrigger className="mt-1 bg-white/5 border-white/20 text-white"><SelectValue placeholder="Select service" /></SelectTrigger>
+                      <SelectTrigger className="mt-1 bg-white/5 border-white/20 text-white">
+                        <SelectValue placeholder="Select service" />
+                      </SelectTrigger>
                       <SelectContent>
-                        {[
-                          "Booth Design",
-                          "Full Build + Logistics",
-                          "Equipment Rental",
-                          "Hybrid Events",
-                        ].map((s) => (
-                          <SelectItem key={s} value={s}>{s}</SelectItem>
+                        {["Booth Design", "Full Build + Logistics", "Equipment Rental", "Hybrid Events"].map((s) => (
+                          <SelectItem key={s} value={s}>
+                            {s}
+                          </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
+                    {/* include service for Netlify scan even if JS fails */}
+                    <input type="hidden" name="service" value={service} />
                   </div>
                 </div>
+
                 <div>
                   <Label htmlFor="message">Message</Label>
-                  <Textarea id="message" name="message" rows={4} placeholder="Booth size, city, dates, and requirements" className="mt-1 bg-white/5 border-white/20 text-white placeholder:text-white/50" />
+                  <Textarea
+                    id="message"
+                    name="message"
+                    rows={4}
+                    placeholder="Booth size, city, dates, and requirements"
+                    className="mt-1 bg-white/5 border-white/20 text-white placeholder:text-white/50"
+                  />
                 </div>
+
                 <div className="flex items-center gap-3">
                   <Button disabled={saving} className="bg-[var(--brand)] hover:bg-[#e06f17] text-white rounded-md px-6">
                     {saving ? "Submitting..." : "Submit"}
                   </Button>
-                  <span className="text-xs text-white/70">Form is frontend-only for now. We’ll wire it to Google Sheets + Email next.</span>
+                  <span className="text-xs text-white/70">Powered by Netlify Forms (no backend needed).</span>
                 </div>
               </form>
             ) : (
               <div className="mt-6 rounded-lg bg-white/10 border border-white/15 p-6">
                 <h3 className="text-xl font-semibold">Thanks! We’ll get back within 24 hours.</h3>
-                <p className="text-white/80 mt-2">Your details have been saved locally. We’ll integrate Google Sheets + Email after you confirm credentials.</p>
+                <p className="text-white/80 mt-2">
+                  Your details were received. We’ll follow up shortly.
+                </p>
               </div>
             )}
           </div>
@@ -256,16 +308,29 @@ const Portfolio = () => {
         <p className="text-neutral-600 mt-2">A snapshot of our recent work.</p>
         <div className="mt-10 grid grid-cols-2 md:grid-cols-3 gap-4">
           {GALLERY.map((img) => (
-            <button key={img.id} onClick={() => { setActive(img); setOpen(true); }} className="group relative overflow-hidden rounded-xl focus:outline-none">
-              <img src={img.url} alt={img.alt} className="h-44 w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+            <button
+              key={img.id}
+              onClick={() => {
+                setActive(img);
+                setOpen(true);
+              }}
+              className="group relative overflow-hidden rounded-xl focus:outline-none"
+            >
+              <img
+                src={img.url}
+                alt={img.alt}
+                className="h-44 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
           ))}
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild><span className="hidden" /></DialogTrigger>
+          <DialogTrigger asChild>
+            <span className="hidden" />
+          </DialogTrigger>
           <DialogContent className="max-w-4xl p-0 bg-black/90 border-white/10">
-            {active && (<img src={active.url} alt={active.alt} className="w-full h-auto object-contain" />)}
+            {active && <img src={active.url} alt={active.alt} className="w-full h-auto object-contain" />}
           </DialogContent>
         </Dialog>
       </div>
@@ -287,7 +352,9 @@ const Testimonials = () => (
                   <CardContent className="p-6">
                     <Quote className="h-6 w-6 text-[var(--brand)]" />
                     <p className="mt-3 text-white/90">“{t.quote}”</p>
-                    <div className="mt-4 text-sm text-white/70">{t.name} — {t.company}</div>
+                    <div className="mt-4 text-sm text-white/70">
+                      {t.name} — {t.company}
+                    </div>
                   </CardContent>
                 </Card>
               </CarouselItem>
@@ -312,10 +379,26 @@ const Footer = () => (
       <div>
         <h5 className="font-semibold">Quick Links</h5>
         <ul className="mt-3 space-y-2 text-sm text-neutral-700">
-          <li><a className="hover:text-black" href="#services">Services</a></li>
-          <li><a className="hover:text-black" href="#why">Why Us</a></li>
-          <li><a className="hover:text-black" href="#portfolio">Portfolio</a></li>
-          <li><a className="hover:text-black" href="#testimonials">Testimonials</a></li>
+          <li>
+            <a className="hover:text-black" href="#services">
+              Services
+            </a>
+          </li>
+          <li>
+            <a className="hover:text-black" href="#why">
+              Why Us
+            </a>
+          </li>
+          <li>
+            <a className="hover:text-black" href="#portfolio">
+              Portfolio
+            </a>
+          </li>
+          <li>
+            <a className="hover:text-black" href="#testimonials">
+              Testimonials
+            </a>
+          </li>
         </ul>
       </div>
       <div>
@@ -327,7 +410,9 @@ const Footer = () => (
         </ul>
       </div>
     </div>
-    <div className="border-t border-neutral-200 py-4 text-center text-xs text-neutral-500">© {new Date().getFullYear()} {BRAND.name}. All rights reserved.</div>
+    <div className="border-t border-neutral-200 py-4 text-center text-xs text-neutral-500">
+      © {new Date().getFullYear()} {BRAND.name}. All rights reserved.
+    </div>
   </footer>
 );
 
