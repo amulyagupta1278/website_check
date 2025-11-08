@@ -86,6 +86,14 @@ export const CORE_SERVICES = [
       "Tea, coffee, and water setup",
       "Cleaning and daily maintenance staff",
     ],
+  },{
+    title: "Complete Event Management",
+    icon: "CheckCircle2",
+    items: [
+      "Single-window execution from planning to wrap-up",
+      "Budgeting, vendor coordination, and on-ground control",
+      "Post-event dismantling and handover",
+    ],
   },
   {
     title: "Others",
@@ -94,15 +102,6 @@ export const CORE_SERVICES = [
       "Generator & power backup",
       "Flower decoration & carpet setup",
       "Logistics and transport arrangements",
-    ],
-  },
-  {
-    title: "Complete Event Management",
-    icon: "CheckCircle2",
-    items: [
-      "Single-window execution from planning to wrap-up",
-      "Budgeting, vendor coordination, and on-ground control",
-      "Post-event dismantling and handover",
     ],
   },
 ];

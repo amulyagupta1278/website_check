@@ -124,7 +124,7 @@ const HeroTop = () => {
       <div className="absolute inset-0 -z-10 pointer-events-none" aria-hidden>
         <div className="absolute -inset-24 bg-[radial-gradient(700px_260px_at_20%_0%,rgba(244,124,30,0.18),transparent)]" />
       </div>
-      <div className="mx-auto max-w-7xl px-6 grid lg:grid-cols-2 gap-10 items-start">
+      <div className="mx-auto max-w-7xl px-6 grid lg:grid-cols-2 gap-10 items-center">
         <div className="order-2 lg:order-1">
           <VideoEmbed youtubeUrl={HERO.youtubeUrl} mp4Url={HERO.videoMp4} />
         </div>
@@ -253,8 +253,9 @@ const CoreServices = () => {
         <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {CORE_SERVICES.map((svc, idx) => {
             const Icon = iconMap[svc.icon] || CheckCircle2;
+            const isLast = idx === CORE_SERVICES.length - 1;
             return (
-              <Card key={idx} className="group hover:shadow-xl transition-all">
+              <Card key={idx} className={`group hover:shadow-xl transition-all ${isLast ? 'lg:col-start-2' : ''}`}>
                 <CardContent className="p-6">
                   <div className="flex items-start gap-4">
                     <div className="h-11 w-11 rounded-lg bg-[#121212] text-white flex items-center justify-center ring-1 ring-black/10 group-hover:ring-[var(--brand)] transition-colors">
@@ -280,16 +281,16 @@ const CoreServices = () => {
 };
 
 const WhyChooseUs = () => (
-  <section id="why" className="py-20 bg-white">
+  <section id="why" className="py-20 bg-[#0f0f10]">
     <div className="mx-auto max-w-7xl px-6">
-      <h2 className="text-3xl md:text-4xl font-bold text-[#121212]">Why Choose Us</h2>
-      <p className="text-neutral-600 mt-2">Premium exhibition booths with dependable execution.</p>
+      <h2 className="text-3xl md:text-4xl font-bold text-white">Why Choose Us</h2>
+      <p className="text-white/70 mt-2">Premium exhibition booths with dependable execution.</p>
       <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {WHY.map((w, i) => (
-          <Card key={i} className="hover:shadow-xl transition-all">
+          <Card key={i} className="hover:shadow-xl transition-all bg-white/5 border-white/10">
             <CardContent className="p-6">
-              <h3 className="font-semibold text-lg text-[#121212]">{w.title}</h3>
-              <p className="text-neutral-600 mt-2">{w.text}</p>
+              <h3 className="font-semibold text-lg text-white">{w.title}</h3>
+              <p className="text-white/80 mt-2">{w.text}</p>
             </CardContent>
           </Card>
         ))}
