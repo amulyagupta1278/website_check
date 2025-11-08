@@ -131,7 +131,7 @@ export const TESTIMONIALS = [
 export const CONTACT = {
   email: "proeventdisplay@gmail.com",
   website: "www.proeventdisplay.com",
-  phones: ["7060007626", "9555442857", "9911391853"],
+  phones: ["7060007626", "9555442857", "9358767062"],
 };
 
 export const FAQS = [
