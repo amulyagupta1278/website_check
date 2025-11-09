@@ -225,7 +225,6 @@ const HeroTop = () => {
                   <Button disabled={saving} className="bg-[var(--brand)] hover:bg-[#e06f17] text-white rounded-md px-6">
                     {saving ? "Submitting..." : "Submit"}
                   </Button>
-                  <span className="text-xs text-white/70">Powered by Netlify Forms (no backend needed).</span>
                 </div>
               </form>
             ) : (
